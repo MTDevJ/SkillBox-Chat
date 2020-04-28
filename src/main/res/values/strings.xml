@@ -1,0 +1,9 @@
+<resources>
+    <string name="app_name">Skillbox chat</string>
+    <string name="message" >test message</string>
+    <string name="writeDate">01.01.2020</string>
+    <string name="userName">user</string>
+    <string name="avatar" />
+    <string name="messageHint">write a mesage</string>
+    <string name="buttonTitle">Send</string>
+</resources>
