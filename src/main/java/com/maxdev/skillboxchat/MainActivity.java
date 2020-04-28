@@ -85,7 +85,21 @@ public class MainActivity extends AppCompatActivity {
                     }
                 });
             }
-        });
+        }, new Consumer<Pair<String, String>>() {
+            @Override
+            public void accept(final Pair<String, String> pair) {
+                runOnUiThread(new Runnable() {
+                    @Override
+                    public void run() {
+                        Toast.makeText(MainActivity.this,
+                                pair.first + " присоединился к чату!",
+                                Toast.LENGTH_LONG)
+                                .show();
+                    }
+                });
+            }
+        }
+        );
         server.connect();
     }
 
@@ -98,6 +112,4 @@ public class MainActivity extends AppCompatActivity {
     public static Context getAppContext() {
         return MainActivity.appContext;
     }
-
-
 }

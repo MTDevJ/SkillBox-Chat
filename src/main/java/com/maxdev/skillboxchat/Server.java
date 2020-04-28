@@ -3,6 +3,7 @@ package com.maxdev.skillboxchat;
 import android.content.res.Resources;
 import android.net.Uri;
 import android.util.Log;
+import android.widget.Toast;
 
 import org.java_websocket.client.WebSocketClient;
 import org.java_websocket.handshake.ServerHandshake;
@@ -20,18 +21,18 @@ public class Server {
     private WebSocketClient client;
     private Map<Long, String> names = new ConcurrentHashMap<>();
     private Consumer<Pair<String, String>> onMessageReceived;
+    private Consumer<Pair<String, String>> onLogin;
 
     //CONSTRUCTOR
-    public Server(Consumer<Pair<String, String>> onMessageReceived) {
+    public Server(Consumer<Pair<String, String>> onMessageReceived, Consumer<Pair<String, String>> onLogin) {
         this.onMessageReceived = onMessageReceived;
+        this.onLogin = onLogin;
     }
     //METHODS
     public void connect() {
         URI addr;
         try {
-            Log.i("Server"," connect to uri: " + MainActivity.getAppContext().getString(R.string.serverUri) );
             addr = new URI(MainActivity.getAppContext().getString(R.string.serverUri));
-            Log.i("Server"," uri: " + addr );
         } catch (URISyntaxException e) {
             e.printStackTrace();
             return;
@@ -52,6 +53,7 @@ public class Server {
                 if (type == Protocol.USER_STATUS) {
                     updateStatus(Protocol.unpackStatus(json));
                 }
+
                 Log.i("SERVER", "Got a message: " + json);
             }
 
@@ -64,6 +66,8 @@ public class Server {
             public void onError(Exception ex) {
                 Log.e("SERVER", "onError", ex);
             }
+
+
         };
 
         client.connect();
@@ -91,6 +95,9 @@ public class Server {
         Protocol.User u = status.getUser();
         if (status.isConnected()) {
             names.put(u.getId(), u.getName());
+            onLogin.accept(
+                    new Pair<>(u.getName(), "")
+            );
         } else {
             names.remove(u.getId());
         }
