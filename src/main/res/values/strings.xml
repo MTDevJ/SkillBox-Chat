@@ -6,4 +6,5 @@
     <string name="avatar" />
     <string name="messageHint">write a mesage</string>
     <string name="buttonTitle">Send</string>
+    <string name="serverUri">ws://35.214.1.221:8881</string>
 </resources>

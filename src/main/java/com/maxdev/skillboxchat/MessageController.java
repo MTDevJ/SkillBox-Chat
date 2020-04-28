@@ -17,6 +17,7 @@ import java.util.Date;
 import java.util.List;
 
 public class MessageController extends RecyclerView.Adapter {
+    //VARIABLES
     private List<Message> messageList;
     private RecyclerView recyclerView;
 
@@ -30,42 +31,13 @@ public class MessageController extends RecyclerView.Adapter {
     private int outgoingLayout;
     private int incomingLayout;
 
-
-    public static class Message {
-        String text;
-        Date date;
-        String userName;
-        Boolean isOutgoing;
-
-        public Message(String text, String userName, Boolean isOutgoing) {
-            this.text = text;
-            this.userName = userName;
-            this.date = new Date();
-            this.isOutgoing = isOutgoing;
-        }
+    //CONSTRUCTOR
+    public MessageController() {
+        this.messageList = new ArrayList<>();
     }
 
-    public class MessageView extends RecyclerView.ViewHolder {
-        TextView messageText;
-        TextView messageTime;
-        TextView userName;
 
-
-        MessageView(@NonNull View itemView, int messageTextId, int messageTimeId, int userNameId) {
-            super(itemView);
-            messageText = itemView.findViewById(messageTextId);
-            messageTime = itemView.findViewById(messageTimeId);
-            userName = itemView.findViewById(userNameId);
-        }
-
-        void bind(Message message) {
-            DateFormat fmt = SimpleDateFormat.getTimeInstance(DateFormat.SHORT);
-            messageText.setText(message.text);
-            messageTime.setText(fmt.format(message.date));
-            userName.setText(message.userName);
-        }
-    }
-
+    //METHODS
 
     public MessageController setMessageTextId(int messageTextId) {
         this.messageTextId = messageTextId;
@@ -92,10 +64,7 @@ public class MessageController extends RecyclerView.Adapter {
         return this;
     }
 
-    public MessageController() {
-        this.messageList = new ArrayList<>();
 
-    }
 
     public void appendTo(RecyclerView recyclerView, Context parent) {
         this.recyclerView = recyclerView;
@@ -139,5 +108,42 @@ public class MessageController extends RecyclerView.Adapter {
     @Override
     public int getItemCount() {
         return messageList.size();
+    }
+
+    //CLASSES
+
+    public static class Message {
+        String text;
+        Date date;
+        String userName;
+        Boolean isOutgoing;
+
+        public Message(String text, String userName, Boolean isOutgoing) {
+            this.text = text;
+            this.userName = userName;
+            this.date = new Date();
+            this.isOutgoing = isOutgoing;
+        }
+    }
+
+    public class MessageView extends RecyclerView.ViewHolder {
+        TextView messageText;
+        TextView messageTime;
+        TextView userName;
+
+
+        MessageView(@NonNull View itemView, int messageTextId, int messageTimeId, int userNameId) {
+            super(itemView);
+            messageText = itemView.findViewById(messageTextId);
+            messageTime = itemView.findViewById(messageTimeId);
+            userName = itemView.findViewById(userNameId);
+        }
+
+        void bind(Message message) {
+            DateFormat fmt = SimpleDateFormat.getTimeInstance(DateFormat.SHORT);
+            messageText.setText(message.text);
+            messageTime.setText(fmt.format(message.date));
+            userName.setText(message.userName);
+        }
     }
 }
