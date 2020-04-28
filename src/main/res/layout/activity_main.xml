@@ -22,6 +22,7 @@
             android:layout_weight="1"
             android:autofillHints=""
             android:ems="10"
+            android:fontFamily="@font/archivo_narrow_bold"
             android:hint="@string/messageHint"
             android:inputType="textPersonName" />
 
@@ -30,7 +31,10 @@
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:layout_weight="1"
-            android:text="@string/buttonTitle" />
+            android:background="@drawable/gray_toast_message"
+            android:fontFamily="@font/archivo_narrow_bold"
+            android:text="@string/buttonTitle"
+            android:textColor="@android:color/background_light" />
 
     </LinearLayout>
 

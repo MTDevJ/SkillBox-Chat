@@ -9,9 +9,13 @@ import android.app.AlertDialog;
 import android.content.Context;
 import android.content.DialogInterface;
 import android.os.Bundle;
+import android.view.Gravity;
+import android.view.LayoutInflater;
 import android.view.View;
+import android.view.ViewGroup;
 import android.widget.Button;
-import android.widget.EditText;
+import android.widget.EditText;;
+import android.widget.TextView;
 import android.widget.Toast;
 
 public class MainActivity extends AppCompatActivity {
@@ -91,10 +95,18 @@ public class MainActivity extends AppCompatActivity {
                 runOnUiThread(new Runnable() {
                     @Override
                     public void run() {
-                        Toast.makeText(MainActivity.this,
-                                pair.first + " присоединился к чату!",
-                                Toast.LENGTH_LONG)
-                                .show();
+
+                        LayoutInflater inflater = getLayoutInflater();
+                        View layout = inflater.inflate(R.layout.toast_view, (ViewGroup) findViewById(R.id.toastView));
+
+                        Toast toast = Toast.makeText(MainActivity.this, "" , Toast.LENGTH_SHORT);
+
+                        TextView text = layout.findViewById(R.id.toastMessageView);
+                        text.setText(pair.first + " присоединился к чату!");
+                        toast.setGravity(Gravity.BOTTOM, 0, 150);
+                        toast.setView(layout);
+                        toast.show();
+
                     }
                 });
             }
