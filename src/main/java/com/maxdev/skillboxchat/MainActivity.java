@@ -27,6 +27,10 @@ public class MainActivity extends AppCompatActivity {
     private MessageController controller;
     private Server server;
 
+    public static Context getAppContext() {
+        return MainActivity.appContext;
+    }
+
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
@@ -89,9 +93,9 @@ public class MainActivity extends AppCompatActivity {
                     }
                 });
             }
-        }, new Consumer<Pair<String, String>>() {
+        }, new Consumer<Pair<String, Integer>>() {
             @Override
-            public void accept(final Pair<String, String> pair) {
+            public void accept(final Pair<String, Integer> pair) {
                 runOnUiThread(new Runnable() {
                     @Override
                     public void run() {
@@ -99,13 +103,34 @@ public class MainActivity extends AppCompatActivity {
                         LayoutInflater inflater = getLayoutInflater();
                         View layout = inflater.inflate(R.layout.toast_view, (ViewGroup) findViewById(R.id.toastView));
 
-                        Toast toast = Toast.makeText(MainActivity.this, "" , Toast.LENGTH_SHORT);
+                        Toast toast = Toast.makeText(MainActivity.this, "", Toast.LENGTH_SHORT);
 
                         TextView text = layout.findViewById(R.id.toastMessageView);
                         text.setText(pair.first + " присоединился к чату!");
                         toast.setGravity(Gravity.BOTTOM, 0, 150);
                         toast.setView(layout);
                         toast.show();
+
+                        LayoutInflater inflaterCounter = getLayoutInflater();
+                        View layoutCounter = inflaterCounter.inflate(R.layout.activity_main, (ViewGroup) findViewById(R.id.linearLayout2));
+
+                        TextView counter = layoutCounter.findViewById(R.id.users_counter);
+                        counter.setText(getResources().getString(R.string.usersCounter) + pair.second);
+
+                    }
+                });
+            }
+        }, new Consumer<Pair<String, Integer>>() {
+            @Override
+            public void accept(final Pair<String, Integer> pair) {
+                runOnUiThread(new Runnable() {
+                    @Override
+                    public void run() {
+                        LayoutInflater inflater = getLayoutInflater();
+                        View layout = inflater.inflate(R.layout.activity_main, (ViewGroup) findViewById(R.id.linearLayout2));
+
+                        TextView counter = layout.findViewById(R.id.users_counter);
+                        counter.setText(getResources().getString(R.string.usersCounter) + pair.second);
 
                     }
                 });
@@ -121,7 +146,4 @@ public class MainActivity extends AppCompatActivity {
         server.disconnect();
     }
 
-    public static Context getAppContext() {
-        return MainActivity.appContext;
-    }
 }

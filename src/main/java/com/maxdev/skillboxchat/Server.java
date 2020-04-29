@@ -1,9 +1,6 @@
 package com.maxdev.skillboxchat;
 
-import android.content.res.Resources;
-import android.net.Uri;
 import android.util.Log;
-import android.widget.Toast;
 
 import org.java_websocket.client.WebSocketClient;
 import org.java_websocket.handshake.ServerHandshake;
@@ -21,12 +18,15 @@ public class Server {
     private WebSocketClient client;
     private Map<Long, String> names = new ConcurrentHashMap<>();
     private Consumer<Pair<String, String>> onMessageReceived;
-    private Consumer<Pair<String, String>> onLogin;
+    private Consumer<Pair<String, Integer>> onLogin;
+    private Consumer<Pair<String, Integer>> onLogOut;
 
     //CONSTRUCTOR
-    public Server(Consumer<Pair<String, String>> onMessageReceived, Consumer<Pair<String, String>> onLogin) {
+    public Server(Consumer<Pair<String, String>> onMessageReceived, Consumer<Pair<String, Integer>> onLogin, Consumer<Pair<String, Integer>> onLogOut) {
         this.onMessageReceived = onMessageReceived;
         this.onLogin = onLogin;
+        this.onLogOut = onLogOut;
+
     }
     //METHODS
     public void connect() {
@@ -96,10 +96,13 @@ public class Server {
         if (status.isConnected()) {
             names.put(u.getId(), u.getName());
             onLogin.accept(
-                    new Pair<>(u.getName(), "")
+                    new Pair<>(u.getName(), names.size())
             );
         } else {
             names.remove(u.getId());
+            onLogOut.accept(
+                    new Pair<>(u.getName(), names.size())
+            );
         }
     }
 
